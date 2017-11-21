@@ -23,7 +23,8 @@ import io.reactivex.processors.BehaviorProcessor;
  * @author nekocode (nekocode.cn@gmail.com)
  */
 public class LifecyclePublisher {
-    public static final int ON_ATTACH = 0;
+    public static final int DEFAULT = -1;
+    public static final int ON_ATTACH = DEFAULT + 1;
     public static final int ON_CREATE = ON_ATTACH + 1;
     public static final int ON_CREATE_VIEW = ON_CREATE + 1;
     public static final int ON_START = ON_CREATE_VIEW + 1;
@@ -34,7 +35,7 @@ public class LifecyclePublisher {
     public static final int ON_DESTROY = ON_DESTROY_VIEW + 1;
     public static final int ON_DETACH = ON_DESTROY + 1;
 
-    @IntDef({ON_ATTACH, ON_CREATE, ON_CREATE_VIEW,
+    @IntDef({DEFAULT, ON_ATTACH, ON_CREATE, ON_CREATE_VIEW,
             ON_START, ON_RESUME,
             ON_PAUSE, ON_STOP,
             ON_DESTROY_VIEW, ON_DESTROY, ON_DETACH})

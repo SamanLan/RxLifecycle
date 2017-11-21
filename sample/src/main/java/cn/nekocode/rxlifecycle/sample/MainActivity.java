@@ -122,13 +122,13 @@ public class MainActivity extends AppCompatActivity {
 
     private void testObservable() {
         Observable.interval(0, 2, TimeUnit.SECONDS)
-                .compose(RxLifecycle.bind(this).<Long>withObservable())
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
+                .compose(RxLifecycle.bind(this).<Long>withObservable(LifecyclePublisher.ON_STOP))
                 .subscribe(new Consumer<Long>() {
                     @Override
                     public void accept(Long n) throws Exception {
-                        toast("Observable -> " + n.toString());
+                        System.out.println("Observable -> " + "-------------------------");
                     }
                 });
     }

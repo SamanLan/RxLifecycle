@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.nekocode.rxlifecycle.compact;
+package cn.nekocode.rxlifecycle;
 
 import android.app.Activity;
 import android.content.Context;
@@ -23,8 +23,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import cn.nekocode.rxlifecycle.LifecyclePublisher;
 
 /**
  * @author nekocode (nekocode.cn@gmail.com)

@@ -93,22 +93,42 @@ public class RxLifecycle {
     }
 
     public <T> FlowableTransformer<T, T> withFlowable() {
-        return new BindLifecycleFlowableTransformer<T>(lifecyclePublisher.getBehavior());
+        return withFlowable(LifecyclePublisher.DEFAULT);
+    }
+
+    public <T> FlowableTransformer<T, T> withFlowable(@LifecyclePublisher.Event int event) {
+        return new BindLifecycleFlowableTransformer<T>(lifecyclePublisher.getBehavior(), event);
     }
 
     public <T> ObservableTransformer<T, T> withObservable() {
-        return new BindLifecycleObservableTransformer<T>(lifecyclePublisher.getBehavior());
+        return withObservable(LifecyclePublisher.DEFAULT);
+    }
+
+    public <T> ObservableTransformer<T, T> withObservable(@LifecyclePublisher.Event int event) {
+        return new BindLifecycleObservableTransformer<T>(lifecyclePublisher.getBehavior(), event);
     }
 
     public CompletableTransformer withCompletable() {
-        return new BindLifecycleCompletableTransformer(lifecyclePublisher.getBehavior());
+        return withCompletable(LifecyclePublisher.DEFAULT);
+    }
+
+    public CompletableTransformer withCompletable(@LifecyclePublisher.Event int event) {
+        return new BindLifecycleCompletableTransformer(lifecyclePublisher.getBehavior(), event);
     }
 
     public <T> SingleTransformer<T, T> withSingle() {
-        return new BindLifecycleSingleTransformer<T>(lifecyclePublisher.getBehavior());
+        return withSingle(LifecyclePublisher.DEFAULT);
+    }
+
+    public <T> SingleTransformer<T, T> withSingle(@LifecyclePublisher.Event int event) {
+        return new BindLifecycleSingleTransformer<T>(lifecyclePublisher.getBehavior(), event);
     }
 
     public <T> MaybeTransformer<T, T> withMaybe() {
-        return new BindLifecycleMaybeTransformer<T>(lifecyclePublisher.getBehavior());
+        return withMaybe(LifecyclePublisher.DEFAULT);
+    }
+
+    public <T> MaybeTransformer<T, T> withMaybe(@LifecyclePublisher.Event int event) {
+        return new BindLifecycleMaybeTransformer<T>(lifecyclePublisher.getBehavior(), event);
     }
 }

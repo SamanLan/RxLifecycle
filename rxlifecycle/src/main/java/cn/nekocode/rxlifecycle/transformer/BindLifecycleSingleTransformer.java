@@ -29,13 +29,15 @@ import io.reactivex.processors.BehaviorProcessor;
  */
 public class BindLifecycleSingleTransformer<T> implements SingleTransformer<T, T> {
     private final BehaviorProcessor<Integer> lifecycleBehavior;
+    private @LifecyclePublisher.Event int event = LifecyclePublisher.DEFAULT;
 
     private BindLifecycleSingleTransformer() throws IllegalAccessException {
         throw new IllegalAccessException();
     }
 
-    public BindLifecycleSingleTransformer(@NonNull BehaviorProcessor<Integer> lifecycleBehavior) {
+    public BindLifecycleSingleTransformer(@NonNull BehaviorProcessor<Integer> lifecycleBehavior,@LifecyclePublisher.Event int event) {
         this.lifecycleBehavior = lifecycleBehavior;
+        this.event = event;
     }
 
     @Override
@@ -44,9 +46,13 @@ public class BindLifecycleSingleTransformer<T> implements SingleTransformer<T, T
                 lifecycleBehavior.skipWhile(new Predicate<Integer>() {
                     @Override
                     public boolean test(@LifecyclePublisher.Event Integer event) throws Exception {
-                        return event != LifecyclePublisher.ON_DESTROY_VIEW &&
-                                event != LifecyclePublisher.ON_DESTROY &&
-                                event != LifecyclePublisher.ON_DETACH;
+                        if (BindLifecycleSingleTransformer.this.event == LifecyclePublisher.DEFAULT) {
+                            return event != LifecyclePublisher.ON_DESTROY_VIEW &&
+                                    event != LifecyclePublisher.ON_DESTROY &&
+                                    event != LifecyclePublisher.ON_DETACH;
+                        } else {
+                            return event != BindLifecycleSingleTransformer.this.event;
+                        }
                     }
                 })
         );

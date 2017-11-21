@@ -30,13 +30,15 @@ import io.reactivex.processors.BehaviorProcessor;
  */
 public class BindLifecycleCompletableTransformer<T> implements CompletableTransformer {
     private final BehaviorProcessor<Integer> lifecycleBehavior;
+    private @LifecyclePublisher.Event int event = LifecyclePublisher.DEFAULT;
 
     private BindLifecycleCompletableTransformer() throws IllegalAccessException {
         throw new IllegalAccessException();
     }
 
-    public BindLifecycleCompletableTransformer(@NonNull BehaviorProcessor<Integer> lifecycleBehavior) {
+    public BindLifecycleCompletableTransformer(@NonNull BehaviorProcessor<Integer> lifecycleBehavior, @LifecyclePublisher.Event int event) {
         this.lifecycleBehavior = lifecycleBehavior;
+        this.event = event;
     }
 
     @Override
@@ -45,9 +47,13 @@ public class BindLifecycleCompletableTransformer<T> implements CompletableTransf
                 lifecycleBehavior.filter(new Predicate<Integer>() {
                     @Override
                     public boolean test(@LifecyclePublisher.Event Integer event) throws Exception {
-                        return event == LifecyclePublisher.ON_DESTROY_VIEW ||
-                                event == LifecyclePublisher.ON_DESTROY ||
-                                event == LifecyclePublisher.ON_DETACH;
+                        if (BindLifecycleCompletableTransformer.this.event == LifecyclePublisher.DEFAULT) {
+                            return event != LifecyclePublisher.ON_DESTROY_VIEW &&
+                                    event != LifecyclePublisher.ON_DESTROY &&
+                                    event != LifecyclePublisher.ON_DETACH;
+                        } else {
+                            return event != BindLifecycleCompletableTransformer.this.event;
+                        }
                     }
                 }).take(1).flatMapCompletable(new Function<Integer, Completable>() {
                     @Override
